@@ -7,7 +7,15 @@ public class SignUpForm {
     private String password;
     private String mobileNumber;
     private String userName;
+    private String status;
 
+    public String getSuccess() {
+        return status;
+    }
+
+    public void setSuccess(String success) {
+        this.status = success;
+    }
 
     public String getEmailId() {
         return emailId;
