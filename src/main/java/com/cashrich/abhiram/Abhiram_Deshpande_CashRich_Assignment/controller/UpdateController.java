@@ -1,20 +1,32 @@
 package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.controller;
 
-import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.entities.User;
-import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.local_services.UserServiceImpl;
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.local_services.IUserServiceImpl;
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.local_services.UserService;
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.security.Principal;
+
+@RestController()
+@RequestMapping("/update")
 public class UpdateController {
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
-    @PostMapping("/update-first-name")
-    public void updateFirstName(){
+    private AuthenticationManager manager;
+
+    @Autowired
+    private JWTUtil helper;
+    @Autowired
+    private UserService userService;
+    @PostMapping("/update-first-name/{newFirstName}")
+    public void updateFirstName(@RequestParam  String newFirstName){
+
+
+
 
     }
 
@@ -32,10 +44,24 @@ public class UpdateController {
     public void updatePassword(){
 
     }
+    private void authenticate(String username, String password) {
 
-    @GetMapping ("/get-user/{userName}")
-    public User getUser(@PathVariable String userName){
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
+        try {
+            manager.authenticate(authentication);
 
-        return userServiceImpl.getUser(userName);
+
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException(" Invalid Username or Password  !!");
+        }
+
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public String exceptionHandler() {
+        return "Invalid Credentials !";
+    }
+
+    public String getLoggedInUser(Principal principal){
+        return principal.getName();
     }
 }
