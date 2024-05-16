@@ -54,7 +54,6 @@ public class AuthenticationController {
     }
 
 
-    @GetMapping
     public String getLoggedInUser(Principal principal){
         return principal.getName();
     }
