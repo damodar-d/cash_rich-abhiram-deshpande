@@ -1,16 +1,54 @@
 package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.local_services;
 
 import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.entities.User;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface UserService {
-    public User getUser(String userName);
+@Service
+public class UserService {
 
-    public void updateFirstName(String newFirstName);
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    CustomUserDetailService customUserDetailService;
 
-    public void updateLastName(String newLastName);
+    public User getUser(String userName){
+        return  userRepository.findByUserName(userName);
+    }
 
-    public void updateMobileNumber(String newMobileNumber);
+    public User createUser(User user){
 
-    public void updatePassword(String newPassword);
+       return userRepository.save(user);
+    }
+
+    public User updateEmail(String newEmail, String userName){
+        User user = userRepository.findByUserName(userName);
+        user.setEmailId(newEmail);
+        return userRepository.save(user);
+    }
+
+    public User updateFirstName(String newFirstName,String userName){
+        User user = userRepository.findByUserName(userName);
+        user.setFirstName(newFirstName);
+        return userRepository.save(user);
+    }
+
+    public User updateLastName(String newLastName,String userName){
+        User user = userRepository.findByUserName(userName);
+        user.setLastName(newLastName);
+        return userRepository.save(user);
+    }
+
+    public User updatePassword(String newPassword,String userName){
+        User user = userRepository.findByUserName(userName);
+        user.setPassword(newPassword);
+        return userRepository.save(user);
+    }
+    public User updateMobileNumber(String newMobileNumber,String userName){
+        User user = userRepository.findByUserName(userName);
+        user.setMobileNumber(newMobileNumber);
+        return userRepository.save(user);
+    }
+
 }
