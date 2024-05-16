@@ -4,10 +4,10 @@ import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.entities.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class IUserServiceImpl implements IUserService {
     private User user;
 
-    public UserServiceImpl() {
+    public IUserServiceImpl() {
         this.user = new User("ard_1110","designing.developer111@gmail.com","Abhiram","Deshpande","Hehe","9146404087/");
     }
 
