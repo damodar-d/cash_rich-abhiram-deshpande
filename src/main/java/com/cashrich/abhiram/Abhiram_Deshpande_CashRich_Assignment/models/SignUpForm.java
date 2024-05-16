@@ -1,4 +1,4 @@
-package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.entities;
+package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.models;
 
 public class SignUpForm {
     private String emailId;
