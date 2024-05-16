@@ -1,13 +1,16 @@
 package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.entities;
 
+
+
 public class User {
 
+    private String userName;
     private String emailId;
     private String firstName;
     private String lastName;
     private String password;
     private String mobileNumber;
-    private String userName;
+
 
     public String getUserName() {
         return userName;
