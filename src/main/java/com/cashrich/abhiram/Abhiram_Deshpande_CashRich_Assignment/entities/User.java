@@ -1,10 +1,13 @@
 package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.entities;
 
 
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.utils.UtilStrings;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,10 +23,17 @@ import java.util.Collection;
 public class User implements UserDetails {
 
     @Id
+    @Pattern(regexp = "^[A-Za-z]+$" , message = "Name must contain only characters")
+    @Size(min = 4, max = 15, message = "Name must be between 4 and 15 characters")
     private String userName;
     private String emailId;
     private String firstName;
     private String lastName;
+    @Size(min = 8, max = 15, message = "Password length must be between 8 and 15 characters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]$", message = "Password has to be 8 to 15 in length with mix of at\n" +
+            "least 1 upper, 1\n" +
+            "\n" +
+            "lower, 1 digit and 1 special character")
     private String password;
     private String mobileNumber;
 
