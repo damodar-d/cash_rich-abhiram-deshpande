@@ -1,4 +1,4 @@
-package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.security;
+package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.filters;
 
 import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.utils.UtilStrings;
 import jakarta.servlet.FilterChain;
@@ -6,21 +6,35 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.json.JSONObject;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
+
 @Order(1)
+@Component
 public class ApiOriginConfirmationHeaderFilter extends HttpFilter {
 
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        String headerValue = request.getHeader(UtilStrings.THIRD_PARTY_API_HEADER_NAME);
-        if(headerValue.equals(UtilStrings.TRUSTED_API_ORIGIN_HEADER_VALUE)){
+        System.out.println("----------------");
+        System.out.println("Request hit to ApiOriginConfirmationHeaderFilter");
+        System.out.println("----------------");
+        String headerValue = request.getHeader(UtilStrings.TRUSTED_API_ORIGIN_HEADER_NAME);
+
+        if(headerValue!=null && headerValue.equals(UtilStrings.TRUSTED_API_ORIGIN_HEADER_VALUE)){
+            SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+            Session session = factory.openSession();
+            Transaction transaction = session.beginTransaction();
+            request.setAttribute("hibernate_session_object",session);
+            request.setAttribute("hibernate_transaction_object",transaction);
             chain.doFilter(request,response);
         }
         else {
@@ -38,3 +52,5 @@ public class ApiOriginConfirmationHeaderFilter extends HttpFilter {
 
     }
 }
+
+
