@@ -30,10 +30,8 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     @Size(min = 8, max = 15, message = "Password length must be between 8 and 15 characters")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]$", message = "Password has to be 8 to 15 in length with mix of at\n" +
-            "least 1 upper, 1\n" +
-            "\n" +
-            "lower, 1 digit and 1 special character")
+//    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[@$!%*?&])(?=.*\\d)[A-Za-z\\d@$!%*?&]$",
+//            message = "Password should have least 1 upper, 1 lower, 1 digit and 1 special character")
     private String password;
     private String mobileNumber;
 
