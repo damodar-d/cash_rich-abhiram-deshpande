@@ -1,5 +1,6 @@
-package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.security;
+package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.filters;
 
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.security.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -7,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,20 +22,21 @@ import java.io.IOException;
 import java.security.Security;
 
 @Component
+@Order(2)
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JWTUtil jwtHelper;
-
-
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("The request has hit here");
-        System.out.println("--------------------------------------------");
+        System.out.println("----------------");
+        System.out.println("Request hit to JWTAuthenticationFilter");
+        System.out.println("----------------");
+
         System.out.println(request.toString());
 
         String requestHeader = request.getHeader("Authorization");
