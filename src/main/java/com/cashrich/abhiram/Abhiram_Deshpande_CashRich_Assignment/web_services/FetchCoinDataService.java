@@ -43,53 +43,28 @@ public class FetchCoinDataService {
         qParams.forEach((parameter, value)->buffer.append(value+",") );
         String requiredUrl = buffer.toString();
         ResponseEntity<String>responseEntity = restTemplate.exchange(requiredUrl, HttpMethod.GET,requestEntity,String.class);
-
         String body = responseEntity.getBody();
         JSONObject jsonObject = new JSONObject(body).getJSONObject("data");
         ArrayList<JSONObject>objects= new ArrayList<>();
-
         Iterator<String> iterator =jsonObject.keys();
-
         JSONObject rootJSONObject = new JSONObject();
         JSONObject dataJSonObject = new JSONObject();
-
-
-        while (iterator.hasNext()){
-            {
+        while (iterator.hasNext()){{
                 objects.add(jsonObject.getJSONObject(iterator.next()));
             }
-
             objects.forEach(jobject-> {
                 String name= jobject.getString("name");
                 String symbol = jobject.getString("symbol");
                 double price = Double.parseDouble(jobject.getJSONObject("quote").getJSONObject("USD").get("price").toString());
-
-                System.out.println(name+"--"+symbol+"--"+price);
-
                 JSONObject innerJsonObject = new JSONObject();
                 innerJsonObject.put("name",name);
                 innerJsonObject.put("price",price);
-
                 dataJSonObject.put(symbol,innerJsonObject);
-
-                //dataJSonObject.append(symbol,new JSONObject().append("name",name).append("symbol",symbol).append("price",price));
             });
-
             rootJSONObject.put("data",dataJSonObject);
-
         }
-
-//
-        //JSONObject jsonObject = HTTP.toJSONObject(responseEntity.getBody());
-
-
-
-
-        //System.out.println(jsonObject);
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type","application/json");
-
         return new ResponseEntity<>(rootJSONObject.toString(),headers,HttpStatus.OK);
     }
 }
