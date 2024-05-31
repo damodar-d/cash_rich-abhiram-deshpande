@@ -1,12 +1,16 @@
 package com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.config;
 
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.filters.ApiOriginConfirmationHeaderFilter;
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.filters.CredentialValidationFilter;
 import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.security.JWTAuthenticationEntryPoint;
-import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.security.JWTAuthenticationFilter;
+import com.cashrich.abhiram.Abhiram_Deshpande_CashRich_Assignment.filters.JWTAuthenticationFilter;
+import org.apache.catalina.webresources.CachedResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +27,13 @@ public class SecurityConfig {
     private JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
+    private ApiOriginConfirmationHeaderFilter apiOriginConfirmationHeaderFilter;
+
+    @Autowired
+    private CredentialValidationFilter credentialValidationFilter;
+//    @Autowired
+//    private HibernateSessionPerRequestFilter hibernateSessionPerRequestFilter;
+    @Autowired
     private UserDetailsService userDetailService;
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -31,9 +42,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 
-        http.csrf(csrf->csrf.disable())
+        http
+                .csrf(csrf->csrf.disable())
                 .cors(cors->cors.disable())
+
                 .authorizeHttpRequests(
+
                         auth->auth
                         .requestMatchers("/home/**")
                         .authenticated()
@@ -44,13 +58,13 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**")
                         .permitAll()
 
-//                        .anyRequest()
-//                        .authenticated()
+                        .anyRequest()
+                        .permitAll()
                 )
                 .exceptionHandling(exception->exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
