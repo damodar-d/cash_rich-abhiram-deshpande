@@ -1,8 +1,8 @@
-# Assignment By Abhiram Deshpande
+# Project By Abhiram Deshpande
 ### API endpoints designed 
 ## Local Endpoints
 * `/auth`  [**Public API**]
-  * `/signup` - To sign up user. Once signed up, returns 201 with JWT response. 
+  * `/signup` - To sign up user. Once signed up, returns `201 (Created)` with a JWT response. 
   * `/login` - Upon successfull login, returns JWT reponse.
  
 * `/home` [**Private API - Needs Authentication**]
